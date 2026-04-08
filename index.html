@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift - Mobilitas Tanpa Batas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #008000;
+            --dark: #1A1A1A;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        /* Service Grid */
+        .services-container {
+            padding: 2rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: -50px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .service-card.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .service-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .service-card.active i {
+            color: white;
+        }
+
+        /* Booking Form */
+        .booking-section {
+            padding: 4rem 5%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .booking-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: var(--gray);
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            outline: none;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(45, 91, 255, 0.1);
+        }
+
+        .btn-order {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .btn-order:hover {
+            background: #1a44d6;
+            transform: scale(1.02);
+        }
+
+        /* Hidden elements for dynamic updates */
+        .food-only, .delivery-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SWIFT</div>
+        <ul class="nav-links">
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#">Promo</a></li>
+            <li><a href="#">Riwayat</a></li>
+            <li><a href="#">Bantuan</a></li>
+        </ul>
+        <div class="user-profile">
+            <i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--gray);"></i>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Mau kemana hari ini?</h1>
+        <p>Solusi transportasi, makanan, dan logistik dalam satu genggaman yang cepat dan presisi.</p>
+    </header>
+
+    <section class="services-container">
+        <div class="service-card active" onclick="switchService('ride', this)">
+            <i class="fas fa-motorcycle"></i>
+            <h3>Motor</h3>
+        </div>
+        <div class="service-card" onclick="switchService('car', this)">
+            <i class="fas fa-car"></i>
+            <h3>Mobil</h3>
+        </div>
+        <div class="service-card" onclick="switchService('food', this)">
+            <i class="fas fa-utensils"></i>
+            <h3>Makanan</h3>
+        </div>
+        <div class="service-card" onclick="switchService('send', this)">
+            <i class="fas fa-box"></i>
+            <h3>Antar Barang</h3>
+        </div>
+    </section>
+
+    <section class="booking-section">
+        <div class="booking-card">
+            <h2 id="form-title" style="margin-bottom: 1.5rem;">Pesan Perjalanan</h2>
+            
+            <form id="orderForm">
+                <div class="input-group">
+                    <label id="label-start">Titik Penjemputan</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" placeholder="Cari lokasi jemput..." required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label id="label-end">Tujuan Akhir</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-flag-checkered"></i>
+                        <input type="text" placeholder="Mau ke mana?" required>
+                    </div>
+                </div>
+
+                <div class="input-group food-only" id="foodField">
+                    <label>Nama Restoran / Menu</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Cari ayam geprek, kopi, dll...">
+                    </div>
+                </div>
+
+                <div class="input-group delivery-only" id="deliveryField">
+                    <label>Detail Barang</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-info-circle"></i>
+                        <input type="text" placeholder="Contoh: Dokumen, Paket Elektronik">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Metode Pembayaran</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-wallet"></i>
+                        <select>
+                            <option>SwiftPay (Saldo: Rp50.000)</option>
+                            <option>Tunai</option>
+                            <option>Kartu Debit/Kredit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-order">Pesan Sekarang</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function switchService(service, element) {
+            // Update Active Card UI
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // Reset Fields
+            const foodField = document.getElementById('foodField');
+            const deliveryField = document.getElementById('deliveryField');
+            const formTitle = document.getElementById('form-title');
+            const labelStart = document.getElementById('label-start');
+            const labelEnd = document.getElementById('label-end');
+
+            foodField.style.display = 'none';
+            deliveryField.style.display = 'none';
+
+            // Logic per Service
+            if (service === 'ride' || service === 'car') {
+                formTitle.innerText = "Pesan Perjalanan";
+                labelStart.innerText = "Titik Penjemputan";
+                labelEnd.innerText = "Tujuan Akhir";
+            } 
+            else if (service === 'food') {
+                formTitle.innerText = "Pesan Makanan";
+                labelStart.innerText = "Lokasi Pengantaran";
+                labelEnd.innerText = "Catatan Alamat (Opsional)";
+                foodField.style.display = 'block';
+            } 
+            else if (service === 'send') {
+                formTitle.innerText = "Kirim Barang";
+                labelStart.innerText = "Lokasi Pengambilan";
+                labelEnd.innerText = "Lokasi Penerima";
+                deliveryField.style.display = 'block';
+            }
+        }
+
+        // Handle Form Submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const serviceName = document.querySelector('.service-card.active h3').innerText;
+            alert('Pesanan ' + serviceName + ' Anda sedang diproses! Mencari mitra terdekat...');
+        });
+    </script>
+</body>
+</html>
